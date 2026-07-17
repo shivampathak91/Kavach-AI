@@ -45,3 +45,6 @@
 2026-07-16 21:24:54.985 | INFO     | app.main:lifespan:17 - Starting Kavach AI v0.1.0
 2026-07-16 21:24:54.986 | INFO     | app.main:lifespan:18 - Environment: development
 2026-07-16 21:24:54.999 | INFO     | app.main:lifespan:24 - Database initialized
+2026-07-17 18:48:55.361 | INFO     | app.main:lifespan:17 - Starting Kavach AI v0.1.0
+2026-07-17 18:48:55.361 | INFO     | app.main:lifespan:18 - Environment: development
+2026-07-17 18:48:55.395 | INFO     | app.main:lifespan:24 - Database initialized

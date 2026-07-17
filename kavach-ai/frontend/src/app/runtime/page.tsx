@@ -2,8 +2,8 @@
 
 import { useEffect, useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import KavachLogo from '@/components/shared/KavachLogo'
 import {
-  Shield,
   Play,
   RotateCcw,
   AlertTriangle,
@@ -671,7 +671,7 @@ export default function RuntimeSecurityCenter() {
       visual: (
         <div className="flex flex-col items-center justify-center p-8 bg-[#0E1424]/60 border border-gray-800 rounded-xl relative overflow-hidden h-64">
           <div className="w-20 h-20 bg-gradient-to-tr from-[#6366f1] to-[#8b5cf6] rounded-2xl flex items-center justify-center shadow-lg shadow-[#6366f1]/25 relative z-10 animate-bounce">
-            <Shield className="w-10 h-10 text-white" />
+            <KavachLogo size={40} />
           </div>
           <p className="mt-6 text-sm text-gray-400 text-center font-mono max-w-sm">
             Securing the autonomous workforce. Preventing privilege escalation, prompt injection, and exfiltration at runtime.
@@ -718,7 +718,7 @@ export default function RuntimeSecurityCenter() {
           </div>
           <ArrowRight className="w-4 h-4 text-gray-600" />
           <div className="p-3 bg-[#6366f1]/20 border border-[#6366f1] text-[#818cf8] rounded-lg text-center flex flex-col items-center shadow-lg shadow-[#6366f1]/10">
-            <Shield className="w-8 h-8 mb-1 animate-pulse" />
+            <KavachLogo size={32} className="mb-1 animate-pulse" />
             <span className="font-bold">Kavach Proxy</span>
             <span className="text-[8px] text-indigo-300">Policy & Risk check</span>
           </div>
@@ -825,7 +825,7 @@ export default function RuntimeSecurityCenter() {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg bg-gradient-to-tr from-[#6366f1] to-[#8b5cf6] flex items-center justify-center shadow-lg shadow-[#6366f1]/20">
-              <Shield className="w-5 h-5 text-white" />
+              <KavachLogo size={20} />
             </div>
             <div>
               <div className="flex items-center gap-2">
@@ -1161,7 +1161,7 @@ export default function RuntimeSecurityCenter() {
                           ? 'bg-red-500/20 border-red-500 text-red-500 shadow-red-500/10'
                           : 'bg-[#8b5cf6]/10 border-[#8b5cf6]/30 text-[#8b5cf6] shadow-[#8b5cf6]/10'
                       }`}>
-                        <Shield className={`w-6 h-6 ${decision === 'idle' && 'animate-pulse'}`} />
+                        <KavachLogo size={24} className={decision === 'idle' ? 'animate-pulse' : ''} />
                       </div>
                       <span className="text-[9px] font-mono font-bold mt-1 text-[#8b5cf6]">Kavach proxy</span>
                     </div>

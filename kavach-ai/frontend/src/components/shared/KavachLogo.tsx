@@ -22,7 +22,6 @@ export default function KavachLogo({ size = 32, className = '' }: KavachLogoProp
       <circle cx={56} cy={32} r={3.5} fill="#22d3ee" />
       <circle cx={58} cy={68} r={3.5} fill="#8b5cf6" />
       <circle cx={38} cy={50} r={3.5} fill="#6366f1" />
-      
       <defs>
         <linearGradient id="shieldGrad" x1={50} y1={8} x2={50} y2={90} gradientUnits="userSpaceOnUse">
           <stop offset="0%" stopColor="#22d3ee" />
@@ -34,8 +33,8 @@ export default function KavachLogo({ size = 32, className = '' }: KavachLogoProp
           <stop offset="100%" stopColor="#8b5cf6" />
         </linearGradient>
         <linearGradient id="kGrad" x1={38} y1={32} x2={58} y2={68} gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="#22d3ee" />
-          <stop offset="100%" stop-color="#e0f2fe" />
+          <stop offset="0%" stopColor="#22d3ee" />
+          <stop offset="100%" stopColor="#e0f2fe" />
         </linearGradient>
       </defs>
     </svg>

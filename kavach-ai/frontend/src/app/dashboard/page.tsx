@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react'
 import { useAuthStore } from '@/stores/auth'
 import { api } from '@/lib/api'
 import type { Metrics, LiveMetrics, Agent, Event } from '@/types'
-import { Shield, Activity, AlertTriangle, CheckCircle, Clock, TrendingUp } from 'lucide-react'
+import KavachLogo from '@/components/shared/KavachLogo'
+import { Activity, AlertTriangle, CheckCircle, Clock, TrendingUp } from 'lucide-react'
 
 export default function DashboardPage() {
   const { isAuthenticated } = useAuthStore()
@@ -75,7 +76,7 @@ export default function DashboardPage() {
         <div className="bg-gradient-to-r from-[#4F7CFF]/15 to-[#8B5CF6]/15 backdrop-blur border border-gray-800 rounded-xl p-6 mb-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <div>
             <h2 className="text-xl font-bold text-white flex items-center gap-2">
-              <Shield className="text-[#4F7CFF] w-5 h-5" />
+              <KavachLogo size={20} />
               Runtime Security Center
             </h2>
             <p className="text-sm text-gray-400 mt-1">
@@ -93,7 +94,7 @@ export default function DashboardPage() {
         {!hasData ? (
           /* Empty State */
           <div className="glass-card p-12 rounded-2xl text-center">
-            <Shield className="w-16 h-16 text-[#4F7CFF] mx-auto mb-6 opacity-50" />
+            <KavachLogo size={64} className="mx-auto mb-6 opacity-50" />
             <h2 className="text-2xl font-bold text-white mb-4">No Data Yet</h2>
             <p className="text-gray-400 mb-8 max-w-md mx-auto">
               Get started by adding your first AI agent. Once you have agents running, 
@@ -120,7 +121,7 @@ export default function DashboardPage() {
               <MetricCard
                 title="Blocked Events"
                 value={metrics?.blocked_events || 0}
-                icon={Shield}
+                icon={KavachLogo}
                 trend={-5}
                 trendDirection="down"
                 color="red"

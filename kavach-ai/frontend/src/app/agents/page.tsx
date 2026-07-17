@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Plus, Bot, Settings, Trash2, Shield, Activity, CheckCircle, XCircle } from 'lucide-react'
+import { Plus, Bot, Settings, Trash2, Activity, CheckCircle, XCircle } from 'lucide-react'
+import KavachLogo from '@/components/shared/KavachLogo'
 import { api } from '@/lib/api'
 import type { Agent } from '@/types'
 

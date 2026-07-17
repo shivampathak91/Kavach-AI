@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Shield } from 'lucide-react'
+import KavachLogo from '@/components/shared/KavachLogo'
 import { api } from '@/lib/api'
 
 export default function RegisterPage() {
@@ -44,7 +44,7 @@ export default function RegisterPage() {
         <div className="bg-[#0E1424]/80 backdrop-blur-xl border border-gray-800 rounded-2xl p-8 shadow-2xl">
           <div className="text-center mb-8">
             <div className="flex items-center justify-center gap-2 mb-4">
-              <Shield className="w-8 h-8 text-[#4F7CFF]" />
+              <KavachLogo size={32} />
               <span className="text-2xl font-bold text-white">Kavach AI</span>
             </div>
             <h1 className="text-3xl font-bold text-white mb-2">Create Account</h1>
