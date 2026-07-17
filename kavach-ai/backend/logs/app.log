@@ -1,0 +1,47 @@
+2026-07-16 15:06:43.656 | INFO     | app.main:lifespan:17 - Starting Kavach AI v0.1.0
+2026-07-16 15:06:43.656 | INFO     | app.main:lifespan:18 - Environment: development
+2026-07-16 15:07:14.071 | INFO     | app.main:lifespan:17 - Starting Kavach AI v0.1.0
+2026-07-16 15:07:14.071 | INFO     | app.main:lifespan:18 - Environment: development
+2026-07-16 15:11:58.243 | INFO     | app.main:lifespan:17 - Starting Kavach AI v0.1.0
+2026-07-16 15:11:58.243 | INFO     | app.main:lifespan:18 - Environment: development
+2026-07-16 15:12:23.982 | INFO     | app.main:lifespan:17 - Starting Kavach AI v0.1.0
+2026-07-16 15:12:23.983 | INFO     | app.main:lifespan:18 - Environment: development
+2026-07-16 15:12:52.023 | INFO     | app.main:lifespan:17 - Starting Kavach AI v0.1.0
+2026-07-16 15:12:52.034 | INFO     | app.main:lifespan:18 - Environment: development
+2026-07-16 15:12:58.784 | INFO     | app.main:lifespan:17 - Starting Kavach AI v0.1.0
+2026-07-16 15:12:58.786 | INFO     | app.main:lifespan:18 - Environment: development
+2026-07-16 15:13:05.823 | INFO     | app.main:lifespan:17 - Starting Kavach AI v0.1.0
+2026-07-16 15:13:05.825 | INFO     | app.main:lifespan:18 - Environment: development
+2026-07-16 15:13:19.300 | INFO     | app.main:lifespan:17 - Starting Kavach AI v0.1.0
+2026-07-16 15:13:19.300 | INFO     | app.main:lifespan:18 - Environment: development
+2026-07-16 15:13:30.592 | INFO     | app.main:lifespan:17 - Starting Kavach AI v0.1.0
+2026-07-16 15:13:30.596 | INFO     | app.main:lifespan:18 - Environment: development
+2026-07-16 15:13:41.316 | INFO     | app.main:lifespan:17 - Starting Kavach AI v0.1.0
+2026-07-16 15:13:41.318 | INFO     | app.main:lifespan:18 - Environment: development
+2026-07-16 15:13:41.553 | INFO     | app.main:lifespan:24 - Database initialized
+2026-07-16 15:13:53.477 | INFO     | app.main:lifespan:17 - Starting Kavach AI v0.1.0
+2026-07-16 15:13:53.479 | INFO     | app.main:lifespan:18 - Environment: development
+2026-07-16 15:13:53.514 | INFO     | app.main:lifespan:24 - Database initialized
+2026-07-16 15:13:53.517 | INFO     | app.main:lifespan:29 - Shutting down application
+2026-07-16 19:06:34.764 | INFO     | app.main:lifespan:17 - Starting Kavach AI v0.1.0
+2026-07-16 19:06:34.768 | INFO     | app.main:lifespan:18 - Environment: development
+2026-07-16 19:06:34.787 | INFO     | app.main:lifespan:24 - Database initialized
+2026-07-16 19:42:44.759 | INFO     | app.main:lifespan:17 - Starting Kavach AI v0.1.0
+2026-07-16 19:42:44.759 | INFO     | app.main:lifespan:18 - Environment: development
+2026-07-16 19:42:44.772 | INFO     | app.main:lifespan:24 - Database initialized
+2026-07-16 19:42:44.772 | INFO     | app.main:lifespan:29 - Shutting down application
+2026-07-16 20:49:42.588 | INFO     | app.main:lifespan:17 - Starting Kavach AI v0.1.0
+2026-07-16 20:49:42.589 | INFO     | app.main:lifespan:18 - Environment: development
+2026-07-16 20:49:42.617 | INFO     | app.main:lifespan:24 - Database initialized
+2026-07-16 20:54:46.266 | INFO     | app.main:lifespan:17 - Starting Kavach AI v0.1.0
+2026-07-16 20:54:46.266 | INFO     | app.main:lifespan:18 - Environment: development
+2026-07-16 20:54:46.281 | INFO     | app.main:lifespan:24 - Database initialized
+2026-07-16 20:59:18.095 | INFO     | app.main:lifespan:17 - Starting Kavach AI v0.1.0
+2026-07-16 20:59:18.096 | INFO     | app.main:lifespan:18 - Environment: development
+2026-07-16 20:59:18.104 | INFO     | app.main:lifespan:24 - Database initialized
+2026-07-16 21:19:31.472 | INFO     | app.main:lifespan:17 - Starting Kavach AI v0.1.0
+2026-07-16 21:19:31.472 | INFO     | app.main:lifespan:18 - Environment: development
+2026-07-16 21:19:31.487 | INFO     | app.main:lifespan:24 - Database initialized
+2026-07-16 21:24:54.985 | INFO     | app.main:lifespan:17 - Starting Kavach AI v0.1.0
+2026-07-16 21:24:54.986 | INFO     | app.main:lifespan:18 - Environment: development
+2026-07-16 21:24:54.999 | INFO     | app.main:lifespan:24 - Database initialized

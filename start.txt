@@ -1,0 +1,92 @@
+You are a team of world-class engineers consisting of a Principal Software Architect, AI Research Engineer, Cybersecurity Expert, Staff Backend Engineer, Senior Frontend Engineer, UI/UX Designer, DevOps Engineer, and YC Startup Founder.
+
+Build a production-grade AI startup called **Kavach AI**.
+
+Title:
+Kavach AI – Zero-Trust Runtime Security Platform for Autonomous AI Agents
+
+Mission:
+Build a platform that sits between AI agents and their tools (MCP servers/APIs) to intercept every action, understand intent, detect prompt injection, learn agent behavior, calculate dynamic trust scores, enforce security policies, require human approval for critical actions, and block unsafe operations before execution.
+
+This is NOT a demo or college project. Build it like a real enterprise SaaS product.
+
+Rules:
+- Build ONLY ONE PHASE at a time.
+- NEVER continue automatically.
+- STOP after each phase and wait for my message: **NEXT**.
+- Think deeply before making architectural decisions.
+- Follow clean architecture, SOLID principles, modular design, scalability, and production-quality coding standards.
+- No placeholders, fake implementations, or unnecessary shortcuts.
+
+Tech Stack:
+- Frontend: Next.js 15, React 19, TypeScript, Tailwind CSS, shadcn/ui, Framer Motion, React Flow, Zustand, TanStack Query.
+- Backend: FastAPI, PostgreSQL, Redis, SQLAlchemy, WebSockets, JWT Authentication.
+- AI: Provider abstraction supporting OpenAI, Gemini, Claude, OpenRouter, and Local AI (Hugging Face Transformers, ONNX Runtime, sentence-transformers). Do NOT use Ollama.
+- Learning: Behavioral profiling, anomaly detection, trust scoring, embeddings, and feedback learning.
+
+Core Features:
+- MCP Runtime Interceptor
+- Intent Analysis Engine
+- Prompt Injection Detection
+- Risk Scoring Engine
+- Behavior Learning Engine
+- Trust Score Engine
+- Policy Engine
+- Memory Inspector
+- Human Approval Workflow
+- Attack Simulator
+- Replay Timeline
+- Audit Logs
+- Live Monitoring
+- Agent Profiles
+- Security Analytics
+
+UI/UX Requirements:
+Do NOT build a typical admin dashboard.
+
+Design a premium product inspired by Linear, Cursor, Vercel, Arc Browser, OpenAI, Stripe, and Cloudflare.
+
+Include:
+- Beautiful landing page
+- Interactive onboarding
+- Mission Control homepage
+- Live Runtime Graph
+- Threat Map
+- Agent Workspace
+- Attack Simulation Lab
+- Behavior Learning Timeline
+- Memory Inspector
+- Policy Studio
+- Replay Center
+- AI Security Copilot
+- Animated charts, glassmorphism, gradients, smooth transitions, micro-interactions, dark mode, command palette, responsive layouts, and enterprise-quality design.
+
+For every phase provide:
+1. Engineering decisions
+2. Architecture diagrams
+3. Folder structure
+4. Database changes (if any)
+5. Complete production-ready code
+6. Testing strategy
+7. Scalability considerations
+8. Security considerations
+
+Development Phases:
+1. Research & Architecture
+2. System Design
+3. UI/UX Design
+4. Backend Foundation
+5. Frontend Foundation
+6. Authentication & RBAC
+7. AI Provider Layer
+8. Intent Engine
+9. Risk Engine
+10. Behavior Learning Engine
+11. Trust Engine
+12. Policy Engine
+13. Memory Inspector
+14. Attack Simulator
+15. Mission Control UI
+16. Testing, Docker, CI/CD & Deployment
+
+Start with **Phase 1 only**. After completing it, STOP and wait for **NEXT**.
