@@ -1,6 +1,105 @@
 import { API_URL, STORAGE_KEYS } from './constants'
 import type { AuthTokens, User, Agent, Policy, Event, Approval, Metrics, LiveMetrics } from '@/types'
 
+// Singleton instance for mock storage
+class MockStorage {
+  private static instance: MockStorage
+  private agents: any[] = []
+
+  private constructor() {
+    this.loadFromStorage()
+  }
+
+  static getInstance(): MockStorage {
+    if (!MockStorage.instance) {
+      MockStorage.instance = new MockStorage()
+    }
+    return MockStorage.instance
+  }
+
+  private loadFromStorage() {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('mockAgents')
+      if (stored) {
+        try {
+          this.agents = JSON.parse(stored)
+          console.log('MockStorage: Loaded agents from localStorage, count:', this.agents.length)
+        } catch (e) {
+          console.error('MockStorage: Failed to parse stored agents:', e)
+          this.agents = []
+        }
+      } else {
+        console.log('MockStorage: No agents in localStorage, initializing defaults')
+        this.initializeDefaults()
+      }
+    } else {
+      console.log('MockStorage: Window not available, initializing defaults')
+      this.initializeDefaults()
+    }
+  }
+
+  private initializeDefaults() {
+    this.agents = [
+      {
+        id: 'github_agent',
+        user_id: 'mock-user-id',
+        name: 'GitHub Agent',
+        type: 'claude',
+        config: { model: 'claude-3-opus' },
+        trust_score: 99,
+        status: 'active',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'slack_agent',
+        user_id: 'mock-user-id',
+        name: 'Slack Agent',
+        type: 'gpt',
+        config: { model: 'gpt-4' },
+        trust_score: 98,
+        status: 'active',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'finance_agent',
+        user_id: 'mock-user-id',
+        name: 'Finance Agent',
+        type: 'gemini',
+        config: { model: 'gemini-pro' },
+        trust_score: 78,
+        status: 'active',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      }
+    ]
+    this.saveToStorage()
+  }
+
+  private saveToStorage() {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('mockAgents', JSON.stringify(this.agents))
+      console.log('MockStorage: Saved agents to localStorage, count:', this.agents.length)
+    }
+  }
+
+  getAgents(): any[] {
+    console.log('MockStorage: getAgents called, returning count:', this.agents.length)
+    return this.agents
+  }
+
+  addAgent(agent: any): any {
+    console.log('MockStorage: addAgent called, current count:', this.agents.length)
+    this.agents.push(agent)
+    this.saveToStorage()
+    console.log('MockStorage: Agent added, new count:', this.agents.length)
+    return agent
+  }
+}
+
+const mockStorage = MockStorage.getInstance()
+
 class ApiClient {
   private baseUrl: string
   private accessToken: string | null = null
@@ -50,11 +149,16 @@ class ApiClient {
       headers['Authorization'] = `Bearer ${this.accessToken}`
     }
 
+    const method = options.method || 'GET'
+    console.log(`API Request: ${method} ${url}`)
+
     try {
       const response = await fetch(url, {
         ...options,
         headers,
       })
+
+      console.log(`API Response: ${response.status} ${response.statusText}`)
 
       if (response.status === 401) {
         // Try to refresh token
@@ -76,11 +180,19 @@ class ApiClient {
         throw new Error(error.message || error.detail || 'An error occurred')
       }
 
-      return response.json()
+      const data = await response.json()
+      console.log(`API Success:`, data)
+      return data
     } catch (err) {
       console.warn(`Connection to backend failed at ${endpoint}. Triggering client-side mock fallback.`, err)
       return this.handleMockFallback<T>(endpoint, options)
     }
+  }
+
+  // Force mock mode for testing
+  private async requestMock<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+    console.log(`Using MOCK API for: ${endpoint}`)
+    return this.handleMockFallback<T>(endpoint, options)
   }
 
   private async refreshAccessToken(): Promise<boolean> {
@@ -128,29 +240,29 @@ class ApiClient {
 
   // Agent endpoints
   async getAgents(): Promise<Agent[]> {
-    return this.request<Agent[]>('/api/v1/agents')
+    return this.requestMock<Agent[]>('/api/v1/agents')
   }
 
   async createAgent(data: { name: string; type: string; api_key: string; config?: any }): Promise<Agent> {
-    return this.request<Agent>('/api/v1/agents', {
+    return this.requestMock<Agent>('/api/v1/agents', {
       method: 'POST',
       body: JSON.stringify(data),
     })
   }
 
   async getAgent(id: string): Promise<Agent> {
-    return this.request<Agent>(`/api/v1/agents/${id}`)
+    return this.requestMock<Agent>(`/api/v1/agents/${id}`)
   }
 
   async updateAgent(id: string, data: Partial<Agent>): Promise<Agent> {
-    return this.request<Agent>(`/api/v1/agents/${id}`, {
+    return this.requestMock<Agent>(`/api/v1/agents/${id}`, {
       method: 'PUT',
       body: JSON.stringify(data),
     })
   }
 
   async deleteAgent(id: string) {
-    return this.request(`/api/v1/agents/${id}`, {
+    return this.requestMock(`/api/v1/agents/${id}`, {
       method: 'DELETE',
     })
   }
@@ -194,8 +306,7 @@ class ApiClient {
     page?: number
     page_size?: number
   }): Promise<{ events: Event[]; total: number; page: number; page_size: number }> {
-    const queryString = new URLSearchParams(params as any).toString()
-    return this.request(`/api/v1/events?${queryString}`)
+    return this.requestMock<{ events: Event[]; total: number; page: number; page_size: number }>('/api/v1/events')
   }
 
   async getEvent(id: string): Promise<Event> {
@@ -217,12 +328,11 @@ class ApiClient {
 
   // Monitoring endpoints
   async getMetrics(params?: { agent_id?: string; start_date?: string; end_date?: string }): Promise<Metrics> {
-    const queryString = new URLSearchParams(params as any).toString()
-    return this.request<Metrics>(`/api/v1/monitoring/metrics?${queryString}`)
+    return this.requestMock<Metrics>('/api/v1/monitoring/metrics')
   }
 
   async getLiveMetrics(): Promise<LiveMetrics> {
-    return this.request<LiveMetrics>('/api/v1/monitoring/live')
+    return this.requestMock<LiveMetrics>('/api/v1/monitoring/live')
   }
 
   // Attack simulation endpoints
@@ -239,6 +349,7 @@ class ApiClient {
 
   private handleMockFallback<T>(endpoint: string, options: RequestInit = {}): T {
     const cleanEndpoint = endpoint.split('?')[0]
+    const method = options.method || 'GET'
     
     if (cleanEndpoint === '/api/v1/auth/login') {
       return {
@@ -261,42 +372,60 @@ class ApiClient {
       } as any
     }
     
+    if (cleanEndpoint === '/api/v1/agents' && method === 'POST') {
+      const body = JSON.parse(options.body as string)
+      const newAgent = {
+        id: `agent-${Date.now()}`,
+        user_id: 'mock-user-id',
+        name: body.name,
+        type: body.type,
+        config: body.config || {},
+        trust_score: 85,
+        status: 'active',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      }
+      return mockStorage.addAgent(newAgent) as any
+    }
+    
     if (cleanEndpoint === '/api/v1/agents') {
-      return [
-        {
-          id: 'github_agent',
-          user_id: 'mock-user-id',
-          name: 'GitHub Agent',
-          type: 'claude',
-          config: { model: 'claude-3-opus' },
-          trust_score: 99,
-          status: 'active',
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        },
-        {
-          id: 'slack_agent',
-          user_id: 'mock-user-id',
-          name: 'Slack Agent',
-          type: 'gpt',
-          config: { model: 'gpt-4' },
-          trust_score: 98,
-          status: 'active',
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        },
-        {
-          id: 'finance_agent',
-          user_id: 'mock-user-id',
-          name: 'Finance Agent',
-          type: 'gemini',
-          config: { model: 'gemini-pro' },
-          trust_score: 78,
-          status: 'active',
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        }
-      ] as any
+      return mockStorage.getAgents() as any
+    }
+
+    // Handle individual agent GET requests
+    if (cleanEndpoint.startsWith('/api/v1/agents/') && method === 'GET') {
+      const agentId = cleanEndpoint.split('/').pop()
+      const agents = mockStorage.getAgents()
+      const agent = agents.find((a: any) => a.id === agentId)
+      if (agent) {
+        return agent as any
+      }
+      throw new Error('Agent not found')
+    }
+
+    // Handle individual agent PUT requests
+    if (cleanEndpoint.startsWith('/api/v1/agents/') && method === 'PUT') {
+      const agentId = cleanEndpoint.split('/').pop()
+      const body = JSON.parse(options.body as string)
+      const agents = mockStorage.getAgents()
+      const index = agents.findIndex((a: any) => a.id === agentId)
+      if (index !== -1) {
+        agents[index] = { ...agents[index], ...body, updated_at: new Date().toISOString() }
+        return agents[index] as any
+      }
+      throw new Error('Agent not found')
+    }
+
+    // Handle individual agent DELETE requests
+    if (cleanEndpoint.startsWith('/api/v1/agents/') && method === 'DELETE') {
+      const agentId = cleanEndpoint.split('/').pop()
+      const agents = mockStorage.getAgents()
+      const index = agents.findIndex((a: any) => a.id === agentId)
+      if (index !== -1) {
+        agents.splice(index, 1)
+        return { success: true } as any
+      }
+      throw new Error('Agent not found')
     }
 
     if (cleanEndpoint === '/api/v1/policies') {
@@ -377,6 +506,7 @@ class ApiClient {
     }
 
     if (cleanEndpoint === '/api/v1/monitoring/metrics') {
+      const agents = mockStorage.getAgents()
       return {
         total_events: 142,
         blocked_events: 18,
@@ -399,8 +529,9 @@ class ApiClient {
     }
 
     if (cleanEndpoint === '/api/v1/monitoring/live') {
+      const agents = mockStorage.getAgents()
       return {
-        active_agents: 4,
+        active_agents: agents.length,
         pending_approvals: 0,
         recent_alerts: [
           {

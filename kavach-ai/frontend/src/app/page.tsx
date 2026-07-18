@@ -3,6 +3,278 @@
 import { useEffect, useState, useRef } from 'react'
 import Link from 'next/link'
 import KavachLogo from '@/components/shared/KavachLogo'
+
+// Code snippets for different languages
+const codeSnippets = {
+  Python: `from kavach_ai import KavachProxy
+
+# Initialize the proxy
+proxy = KavachProxy(
+    endpoint="https://api.kavach.ai/v1",
+    api_key="your-api-key"
+)
+
+# Wrap your MCP client
+mcp_client = proxy.wrap(mcp_client)
+
+# Tool calls are now intercepted
+result = mcp_client.call_tool(
+    name="database_query",
+    args={"query": "SELECT * FROM users"}
+)
+
+# Result includes security metadata
+print(result.decision)  # "ALLOW" or "BLOCK"
+print(result.risk_score)  # 0.0 to 1.0
+print(result.analysis)  # Full security report`,
+  JavaScript: `const { KavachProxy } = require('@kavach-ai/sdk');
+
+// Initialize the proxy
+const proxy = new KavachProxy({
+  endpoint: 'https://api.kavach.ai/v1',
+  apiKey: 'your-api-key'
+});
+
+// Wrap your MCP client
+const mcpClient = proxy.wrap(mcpClient);
+
+// Tool calls are now intercepted
+const result = await mcpClient.callTool({
+  name: 'database_query',
+  args: { query: 'SELECT * FROM users' }
+});
+
+// Result includes security metadata
+console.log(result.decision);  // "ALLOW" or "BLOCK"
+console.log(result.riskScore);  // 0.0 to 1.0
+console.log(result.analysis);  // Full security report`,
+  TypeScript: `import { KavachProxy, SecurityResult } from '@kavach-ai/sdk';
+
+// Initialize the proxy
+const proxy = new KavachProxy({
+  endpoint: 'https://api.kavach.ai/v1',
+  apiKey: 'your-api-key'
+});
+
+// Wrap your MCP client
+const mcpClient = proxy.wrap(mcpClient);
+
+// Tool calls are now intercepted
+const result: SecurityResult = await mcpClient.callTool({
+  name: 'database_query',
+  args: { query: 'SELECT * FROM users' }
+});
+
+// Result includes security metadata
+console.log(result.decision);  // "ALLOW" or "BLOCK"
+console.log(result.riskScore);  // 0.0 to 1.0
+console.log(result.analysis);  // Full security report`,
+  Go: `package main
+
+import (
+    "github.com/kavach-ai/sdk"
+)
+
+func main() {
+    // Initialize the proxy
+    proxy := kavach.NewKavachProxy(&kavach.Config{
+        Endpoint: "https://api.kavach.ai/v1",
+        APIKey:   "your-api-key",
+    })
+
+    // Wrap your MCP client
+    mcpClient := proxy.Wrap(mcpClient)
+
+    // Tool calls are now intercepted
+    result, err := mcpClient.CallTool(&kavach.ToolCall{
+        Name: "database_query",
+        Args: map[string]interface{}{
+            "query": "SELECT * FROM users",
+        },
+    })
+
+    // Result includes security metadata
+    fmt.Println(result.Decision)  // "ALLOW" or "BLOCK"
+    fmt.Println(result.RiskScore)  // 0.0 to 1.0
+    fmt.Println(result.Analysis)  // Full security report
+}`
+};
+
+// Simple syntax highlighting function
+function highlightCode(code: string, language: string): JSX.Element {
+  const lines = code.split('\n');
+  
+  const highlightLine = (line: string) => {
+    const tokens: { text: string; type: 'keyword' | 'string' | 'comment' | 'number' | 'function' | 'default' }[] = [];
+    let remaining = line;
+    
+    if (language === 'Python') {
+      const keywords = ['from', 'import', 'def', 'class', 'return', 'if', 'else', 'for', 'while', 'try', 'except', 'print', 'True', 'False', 'None'];
+      
+      while (remaining.length > 0) {
+        // Check for comment
+        const commentMatch = remaining.match(/^(#.*)$/);
+        if (commentMatch) {
+          tokens.push({ text: commentMatch[1], type: 'comment' });
+          break;
+        }
+        
+        // Check for string
+        const stringMatch = remaining.match(/^(".*?"|'.*?')/);
+        if (stringMatch) {
+          tokens.push({ text: stringMatch[1], type: 'string' });
+          remaining = remaining.substring(stringMatch[1].length);
+          continue;
+        }
+        
+        // Check for keyword
+        const keywordMatch = remaining.match(/^\b(from|import|def|class|return|if|else|for|while|try|except|print|True|False|None)\b/);
+        if (keywordMatch) {
+          tokens.push({ text: keywordMatch[1], type: 'keyword' });
+          remaining = remaining.substring(keywordMatch[1].length);
+          continue;
+        }
+        
+        // Check for number
+        const numberMatch = remaining.match(/^\b(\d+)\b/);
+        if (numberMatch) {
+          tokens.push({ text: numberMatch[1], type: 'number' });
+          remaining = remaining.substring(numberMatch[1].length);
+          continue;
+        }
+        
+        // Check for function call
+        const funcMatch = remaining.match(/^(\w+)\(/);
+        if (funcMatch) {
+          tokens.push({ text: funcMatch[1], type: 'function' });
+          remaining = remaining.substring(funcMatch[1].length);
+          continue;
+        }
+        
+        // Default: take one character
+        tokens.push({ text: remaining[0], type: 'default' });
+        remaining = remaining.substring(1);
+      }
+    } else if (language === 'JavaScript' || language === 'TypeScript') {
+      while (remaining.length > 0) {
+        // Check for comment
+        const commentMatch = remaining.match(/^(\/\/.*)$/);
+        if (commentMatch) {
+          tokens.push({ text: commentMatch[1], type: 'comment' });
+          break;
+        }
+        
+        // Check for string
+        const stringMatch = remaining.match(/^(".*?"|'.*?'|`.*?`)/);
+        if (stringMatch) {
+          tokens.push({ text: stringMatch[1], type: 'string' });
+          remaining = remaining.substring(stringMatch[1].length);
+          continue;
+        }
+        
+        // Check for keyword
+        const keywordMatch = remaining.match(/^\b(const|let|var|function|return|if|else|for|while|try|catch|async|await|import|from|export|default|new|this)\b/);
+        if (keywordMatch) {
+          tokens.push({ text: keywordMatch[1], type: 'keyword' });
+          remaining = remaining.substring(keywordMatch[1].length);
+          continue;
+        }
+        
+        // Check for number
+        const numberMatch = remaining.match(/^\b(\d+)\b/);
+        if (numberMatch) {
+          tokens.push({ text: numberMatch[1], type: 'number' });
+          remaining = remaining.substring(numberMatch[1].length);
+          continue;
+        }
+        
+        // Check for function call
+        const funcMatch = remaining.match(/^(\w+)\(/);
+        if (funcMatch) {
+          tokens.push({ text: funcMatch[1], type: 'function' });
+          remaining = remaining.substring(funcMatch[1].length);
+          continue;
+        }
+        
+        // Default: take one character
+        tokens.push({ text: remaining[0], type: 'default' });
+        remaining = remaining.substring(1);
+      }
+    } else if (language === 'Go') {
+      while (remaining.length > 0) {
+        // Check for comment
+        const commentMatch = remaining.match(/^(\/\/.*)$/);
+        if (commentMatch) {
+          tokens.push({ text: commentMatch[1], type: 'comment' });
+          break;
+        }
+        
+        // Check for string
+        const stringMatch = remaining.match(/^(".*?")/);
+        if (stringMatch) {
+          tokens.push({ text: stringMatch[1], type: 'string' });
+          remaining = remaining.substring(stringMatch[1].length);
+          continue;
+        }
+        
+        // Check for keyword
+        const keywordMatch = remaining.match(/^\b(package|import|func|return|if|else|for|range|var|const|type|struct|go|chan|select|defer)\b/);
+        if (keywordMatch) {
+          tokens.push({ text: keywordMatch[1], type: 'keyword' });
+          remaining = remaining.substring(keywordMatch[1].length);
+          continue;
+        }
+        
+        // Check for number
+        const numberMatch = remaining.match(/^\b(\d+)\b/);
+        if (numberMatch) {
+          tokens.push({ text: numberMatch[1], type: 'number' });
+          remaining = remaining.substring(numberMatch[1].length);
+          continue;
+        }
+        
+        // Check for function call
+        const funcMatch = remaining.match(/^(\w+)\(/);
+        if (funcMatch) {
+          tokens.push({ text: funcMatch[1], type: 'function' });
+          remaining = remaining.substring(funcMatch[1].length);
+          continue;
+        }
+        
+        // Default: take one character
+        tokens.push({ text: remaining[0], type: 'default' });
+        remaining = remaining.substring(1);
+      }
+    }
+    
+    return tokens;
+  };
+  
+  const getColor = (type: string) => {
+    switch (type) {
+      case 'keyword': return '#c084fc';
+      case 'string': return '#34d399';
+      case 'comment': return '#6b7280';
+      case 'number': return '#fb923c';
+      case 'function': return '#22d3ee';
+      default: return 'inherit';
+    }
+  };
+  
+  return (
+    <div>
+      {lines.map((line, i) => (
+        <div key={i}>
+          {highlightLine(line).map((token, j) => (
+            <span key={j} style={{ color: getColor(token.type) }}>
+              {token.text}
+            </span>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}
 import {
   Zap,
   Lock,
@@ -102,6 +374,7 @@ function AnimatedCounter({ target, suffix = '', duration = 2000 }: { target: num
 
 export default function LandingPage() {
   const [mounted, setMounted] = useState(false)
+  const [selectedLanguage, setSelectedLanguage] = useState('Python')
   const [copiedBlock, setCopiedBlock] = useState<number | null>(null)
 
   useEffect(() => {
@@ -746,8 +1019,9 @@ response = await llm.chat(user_input)`
                     {['Python', 'JavaScript', 'TypeScript', 'Go'].map((lang) => (
                       <button
                         key={lang}
+                        onClick={() => setSelectedLanguage(lang)}
                         className={`px-3 py-1.5 text-xs font-mono rounded-md transition-all ${
-                          lang === 'Python' 
+                          selectedLanguage === lang 
                             ? 'bg-white/[0.08] text-white' 
                             : 'text-gray-500 hover:text-white hover:bg-white/[0.04]'
                         }`}
@@ -769,29 +1043,9 @@ response = await llm.chat(user_input)`
                   
                   {/* Code content */}
                   <div className="pl-12 pr-6 py-4 text-sm font-mono leading-relaxed">
-                    <pre className="text-emerald-400/90">
-                      <code>{`from kavach_ai import KavachProxy
-
-# Initialize the proxy
-proxy = KavachProxy(
-    endpoint="https://api.kavach.ai/v1",
-    api_key="your-api-key"
-)
-
-# Wrap your MCP client
-mcp_client = proxy.wrap(mcp_client)
-
-# Tool calls are now intercepted
-result = mcp_client.call_tool(
-    name="database_query",
-    args={"query": "SELECT * FROM users"}
-)
-
-# Result includes security metadata
-print(result.decision)  # "ALLOW" or "BLOCK"
-print(result.risk_score)  # 0.0 to 1.0
-print(result.analysis)  # Full security report`}</code>
-                    </pre>
+                    <div className="text-gray-300">
+                      {highlightCode(codeSnippets[selectedLanguage as keyof typeof codeSnippets], selectedLanguage)}
+                    </div>
                   </div>
 
                   {/* Copy button */}
@@ -870,38 +1124,302 @@ print(result.analysis)  # Full security report`}</code>
 
       {/* ═══════════════ CTA SECTION ═══════════════ */}
       <section className="relative z-10 py-32 border-t border-white/[0.04]">
-        <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
-          {/* Decorative glow */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="w-[500px] h-[300px] bg-gradient-to-br from-indigo-600/10 to-purple-600/10 rounded-full blur-3xl" />
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            
+            {/* Left: Enhanced 3D Shield Visualization */}
+            <div className="relative h-[500px] flex items-center justify-center">
+              {/* Security grid background */}
+              <div className="absolute inset-0 opacity-5 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at center, rgba(99,102,241,0.3) 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
+              
+              {/* Radial glow behind shield */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className="w-[350px] h-[350px] bg-gradient-to-br from-emerald-500/15 via-cyan-500/10 to-purple-500/15 rounded-full blur-3xl" />
+              </div>
+
+              {/* Enhanced orbital rings with data packets */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className="w-[320px] h-[320px] border border-emerald-500/30 rounded-full animate-[spin_25s_linear_infinite]">
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-emerald-400 rounded-full shadow-lg shadow-emerald-400/50" />
+                </div>
+                <div className="absolute w-[280px] h-[280px] border border-cyan-500/25 rounded-full animate-[spin_20s_linear_infinite_reverse]">
+                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-2 h-2 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50" />
+                </div>
+                <div className="absolute w-[240px] h-[240px] border border-purple-500/20 rounded-full animate-[spin_15s_linear_infinite]">
+                  <div className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-purple-400 rounded-full shadow-lg shadow-purple-400/50" />
+                </div>
+              </div>
+
+              {/* Large premium 3D Kavach Logo */}
+              <div className="relative z-10">
+                {/* Kavach Logo with breathing animation */}
+                <div className="relative animate-[float_4s_ease-in-out_infinite]">
+                  <KavachLogo size={180} />
+                </div>
+
+                {/* Enhanced floating status badges */}
+                <div className="absolute -top-16 -left-32 px-4 py-2 bg-gradient-to-r from-emerald-500/25 to-emerald-500/10 backdrop-blur border border-emerald-500/40 rounded-xl text-xs font-mono text-emerald-400 shadow-lg shadow-emerald-500/20 animate-pulse">
+                  <div className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                    <span>Runtime Protected</span>
+                  </div>
+                </div>
+                
+                <div className="absolute -top-12 -right-28 px-4 py-2 bg-gradient-to-r from-purple-500/25 to-purple-500/10 backdrop-blur border border-purple-500/40 rounded-xl text-xs font-mono text-purple-400 shadow-lg shadow-purple-500/20 animate-pulse" style={{ animationDelay: '0.5s' }}>
+                  <div className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-ping" />
+                    <span>Zero Trust Active</span>
+                  </div>
+                </div>
+                
+                <div className="absolute -bottom-12 -left-28 px-4 py-2 bg-gradient-to-r from-cyan-500/25 to-cyan-500/10 backdrop-blur border border-cyan-500/40 rounded-xl text-xs font-mono text-cyan-400 shadow-lg shadow-cyan-500/20 animate-pulse" style={{ animationDelay: '1s' }}>
+                  <div className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
+                    <span>Policy Engine Online</span>
+                  </div>
+                </div>
+                
+                <div className="absolute -bottom-16 -right-32 px-4 py-2 bg-gradient-to-r from-emerald-500/25 to-emerald-500/10 backdrop-blur border border-emerald-500/40 rounded-xl text-xs font-mono text-emerald-400 shadow-lg shadow-emerald-500/20 animate-pulse" style={{ animationDelay: '1.5s' }}>
+                  <div className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                    <span>MCP Secure</span>
+                  </div>
+                </div>
+
+                {/* Architecture flow beneath logo */}
+                <div className="absolute -bottom-32 left-1/2 -translate-x-1/2 flex items-center gap-3">
+                  <div className="flex flex-col items-center gap-1">
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500/20 to-purple-500/20 border border-indigo-500/30 flex items-center justify-center">
+                      <Cpu className="w-4 h-4 text-indigo-400" />
+                    </div>
+                    <span className="text-[9px] font-mono text-gray-500">AI Agent</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-1">
+                    <div className="w-6 h-0.5 bg-gradient-to-r from-indigo-500/50 to-emerald-500/50 relative overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-emerald-400/50 to-transparent animate-[shimmer_2s_infinite]" />
+                    </div>
+                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  </div>
+                  
+                  <div className="flex flex-col items-center gap-1">
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 border border-emerald-500/30 flex items-center justify-center">
+                      <KavachLogo size={16} />
+                    </div>
+                    <span className="text-[9px] font-mono text-emerald-400">Kavach AI</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-1">
+                    <div className="w-6 h-0.5 bg-gradient-to-r from-emerald-500/50 to-cyan-500/50 relative overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent animate-[shimmer_2s_infinite_0.5s]" />
+                    </div>
+                    <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+                  </div>
+                  
+                  <div className="flex flex-col items-center gap-1">
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500/20 to-emerald-500/20 border border-cyan-500/30 flex items-center justify-center">
+                      <Database className="w-4 h-4 text-cyan-400" />
+                    </div>
+                    <span className="text-[9px] font-mono text-gray-500">MCP Server</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Floating particles */}
+              <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                {[
+                  { left: '10%', top: '15%', delay: '0.1s', duration: '2.5s' },
+                  { left: '20%', top: '80%', delay: '0.3s', duration: '3.0s' },
+                  { left: '35%', top: '25%', delay: '0.5s', duration: '2.8s' },
+                  { left: '45%', top: '70%', delay: '0.7s', duration: '3.2s' },
+                  { left: '55%', top: '40%', delay: '0.2s', duration: '2.6s' },
+                  { left: '65%', top: '85%', delay: '0.9s', duration: '3.5s' },
+                  { left: '75%', top: '20%', delay: '0.4s', duration: '2.9s' },
+                  { left: '85%', top: '60%', delay: '0.6s', duration: '3.1s' },
+                  { left: '15%', top: '50%', delay: '0.8s', duration: '2.7s' },
+                  { left: '30%', top: '35%', delay: '1.0s', duration: '3.3s' },
+                  { left: '50%', top: '75%', delay: '1.2s', duration: '2.4s' },
+                  { left: '70%', top: '45%', delay: '1.4s', duration: '3.0s' },
+                  { left: '80%', top: '90%', delay: '1.6s', duration: '2.8s' },
+                  { left: '25%', top: '65%', delay: '1.8s', duration: '3.2s' },
+                  { left: '40%', top: '10%', delay: '0.0s', duration: '2.5s' },
+                  { left: '60%', top: '55%', delay: '0.2s', duration: '2.9s' },
+                  { left: '90%', top: '30%', delay: '0.4s', duration: '3.4s' },
+                  { left: '5%', top: '75%', delay: '0.6s', duration: '2.6s' },
+                  { left: '95%', top: '85%', delay: '0.8s', duration: '3.1s' },
+                  { left: '48%', top: '15%', delay: '1.0s', duration: '2.7s' }
+                ].map((particle, i) => (
+                  <div
+                    key={i}
+                    className="absolute w-1 h-1 bg-emerald-500/40 rounded-full animate-pulse"
+                    style={{
+                      left: particle.left,
+                      top: particle.top,
+                      animationDelay: particle.delay,
+                      animationDuration: particle.duration
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Right: Enhanced CTA Content */}
+            <div className="space-y-6">
+              {/* Trusted by badge */}
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 border border-emerald-500/20 rounded-full">
+                <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="text-xs font-mono font-medium text-emerald-400">Trusted by Enterprise AI Teams</span>
+              </div>
+
+              {/* Headline */}
+              <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight leading-tight">
+                Ready to secure your{' '}
+                <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                  autonomous agents?
+                </span>
+              </h2>
+
+              {/* Description */}
+              <p className="text-base text-gray-400 leading-relaxed max-w-lg">
+                Deploy Kavach AI as your <strong className="text-white">enterprise runtime guardrail</strong>. Give security teams the confidence to authorize autonomous agent operations with <strong className="text-white">real-time threat detection</strong> and policy enforcement.
+              </p>
+
+              {/* Premium feature cards */}
+              <div className="grid grid-cols-1 gap-3">
+                {[
+                  { icon: AlertTriangle, title: 'Detect threats before execution', desc: 'AI-powered threat analysis' },
+                  { icon: Activity, title: 'Real-time AI runtime protection', desc: 'Sub-2ms decision latency' },
+                  { icon: UserCheck, title: 'Human approval for critical actions', desc: 'Escalation workflows' }
+                ].map((feature, idx) => (
+                  <div key={idx} className="group relative bg-gradient-to-br from-white/[0.04] to-white/[0.01] backdrop-blur border border-white/[0.08] rounded-xl p-4 hover:border-emerald-500/30 hover:shadow-lg hover:shadow-emerald-500/10 transition-all duration-300">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 border border-emerald-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <feature.icon className="w-5 h-5 text-emerald-400" />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="text-sm font-semibold text-white mb-1">{feature.title}</h4>
+                        <p className="text-xs text-gray-500">{feature.desc}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Enhanced buttons */}
+              <div className="space-y-3">
+                <div className="flex flex-wrap gap-3">
+                  <Link
+                    href="/runtime"
+                    className="group relative flex items-center gap-2.5 px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl font-bold text-base overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-indigo-500/30 hover:-translate-y-0.5"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+                    <Play className="w-4 h-4 fill-current relative z-10" />
+                    <span className="relative z-10">Launch Live Demo</span>
+                    <ArrowRight className="w-4 h-4 relative z-10 group-hover:translate-x-0.5 transition-transform" />
+                  </Link>
+                  <Link
+                    href="/login"
+                    className="group relative flex items-center gap-2.5 px-6 py-3 bg-white/[0.04] border border-white/[0.08] text-white rounded-xl font-semibold overflow-hidden transition-all duration-300 hover:bg-white/[0.08] hover:border-emerald-500/30 hover:shadow-lg hover:shadow-emerald-500/10 hover:-translate-y-0.5"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-emerald-500/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+                    <Lock className="w-4 h-4 text-gray-400 group-hover:text-white transition-colors relative z-10" />
+                    <span className="relative z-10">Sign In to Dashboard</span>
+                  </Link>
+                </div>
+                <div className="flex flex-wrap gap-3">
+                  <Link
+                    href="/documentation.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group inline-flex items-center gap-2 px-6 py-3 border border-white/[0.08] text-white rounded-xl font-semibold hover:bg-white/[0.04] hover:border-white/[0.15] transition-all duration-300 hover:-translate-y-0.5"
+                  >
+                    View Documentation
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                  </Link>
+                  <Link
+                    href="https://github.com/shivampathak91/Kavach-AI"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors duration-300"
+                  >
+                    GitHub Repository
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                  </Link>
+                </div>
+              </div>
+
+              {/* Animated metrics row */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-2">
+                {[
+                  { value: '12M+', label: 'Protected Requests' },
+                  { value: '99.98%', label: 'Threat Detection' },
+                  { value: '<2ms', label: 'Decision Time' },
+                  { value: '✓', label: 'Enterprise Ready' }
+                ].map((metric, idx) => (
+                  <div key={idx} className="text-center group">
+                    <div className="text-lg font-bold text-white group-hover:text-emerald-400 transition-colors duration-300">{metric.value}</div>
+                    <div className="text-[10px] text-gray-500 font-mono uppercase tracking-wider">{metric.label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
 
-          <div className="relative z-10 space-y-8">
-            <h2 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight">
-              Ready to secure your
-              <br />
-              <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                autonomous agents?
-              </span>
-            </h2>
-            <p className="text-lg text-gray-400 max-w-xl mx-auto">
-              Deploy Kavach AI as your runtime guardrail and give enterprise security teams the confidence to authorize agent autonomy.
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
-              <Link
-                href="/runtime"
-                className="group flex items-center gap-2.5 px-8 py-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl font-bold text-base hover:opacity-90 transition-all shadow-xl shadow-indigo-500/20"
-              >
-                <Play className="w-4 h-4 fill-current" />
-                Launch Live Demo
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-              </Link>
-              <Link
-                href="/login"
-                className="px-8 py-4 bg-white/[0.04] border border-white/[0.08] text-white rounded-xl font-semibold hover:bg-white/[0.07] transition-all"
-              >
-                Sign In to Dashboard
-              </Link>
+          {/* Enhanced Live Runtime Status Panel */}
+          <div className="mt-12 relative">
+            <div className="bg-gradient-to-br from-white/[0.04] to-white/[0.01] backdrop-blur-xl border border-white/[0.08] rounded-2xl p-6 overflow-hidden">
+              {/* Background grid pattern */}
+              <div className="absolute inset-0 opacity-5 pointer-events-none" style={{ backgroundImage: 'linear-gradient(rgba(99,102,241,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,0.1) 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
+              
+              <div className="relative z-10">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-lg">
+                      <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                      <span className="text-xs font-mono font-medium text-emerald-400">LIVE RUNTIME STATUS</span>
+                    </div>
+                    <div className="text-xs text-gray-500 font-mono">
+                      Last Threat Blocked: <span className="text-emerald-400">2 seconds ago</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <div className="text-right">
+                      <div className="text-[10px] text-gray-500 font-mono uppercase tracking-wider">Requests Today</div>
+                      <div className="text-xl font-bold text-white font-mono">2,847,392</div>
+                    </div>
+                    {/* Mini line chart */}
+                    <div className="w-24 h-12 flex items-end gap-0.5">
+                      {[40, 60, 45, 70, 55, 80, 65, 75, 50, 85, 70, 90].map((h, i) => (
+                        <div
+                          key={i}
+                          className="flex-1 bg-gradient-to-t from-emerald-500/50 to-emerald-400 rounded-sm transition-all hover:opacity-80"
+                          style={{ height: `${h}%` }}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Enhanced status indicators */}
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                  {[
+                    { label: 'Intent Engine', status: 'Active', color: 'emerald' },
+                    { label: 'Prompt Injection', status: 'Protected', color: 'emerald' },
+                    { label: 'Policy Engine', status: 'Enforcing', color: 'emerald' },
+                    { label: 'Trust Engine', status: 'Monitoring', color: 'emerald' },
+                    { label: 'MCP Connection', status: 'Secure', color: 'emerald' }
+                  ].map((item, idx) => (
+                    <div key={idx} className="flex items-center gap-2 px-3 py-2 bg-white/[0.02] border border-white/[0.06] rounded-lg hover:border-emerald-500/30 hover:bg-white/[0.04] transition-all duration-300">
+                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      <div className="flex-1">
+                        <div className="text-[10px] text-gray-400 font-mono">{item.label}</div>
+                        <div className="text-xs font-semibold text-emerald-400">{item.status}</div>
+                      </div>
+                      <Check className="w-3 h-3 text-emerald-400" />
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -912,9 +1430,7 @@ print(result.analysis)  # Full security report`}</code>
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
-                <KavachLogo size={16} />
-              </div>
+              <KavachLogo size={32} />
               <span className="text-sm font-bold text-white">Kavach AI</span>
               <span className="text-xs text-gray-600 font-mono">v0.1.0</span>
             </div>

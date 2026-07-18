@@ -1,0 +1,1655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kavach AI — Developer Documentation</title>
+  <meta name="description" content="Complete developer documentation for Kavach AI - Zero-trust runtime firewall for autonomous AI agents." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #030712;
+      --surface: #0c0f1a;
+      --surface-hover: #111827;
+      --border: rgba(255,255,255,0.08);
+      --border-hover: rgba(255,255,255,0.12);
+      --text: #f5f5f5;
+      --muted: #71717a;
+      --muted-light: #a1a1aa;
+      --indigo: #6366f1;
+      --purple: #8b5cf6;
+      --emerald: #10b981;
+      --cyan: #06b6d4;
+      --red: #ef4444;
+      --amber: #f59e0b;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Ambient grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+      background-size: 72px 72px;
+      z-index: 0;
+    }
+
+    /* Layout */
+    .docs-container {
+      display: flex;
+      min-height: 100vh;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 280px;
+      height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 24px 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-header {
+      padding: 0 24px 24px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--text);
+    }
+
+    .sidebar-logo svg {
+      width: 32px;
+      height: 32px;
+    }
+
+    .sidebar-search {
+      padding: 0 16px 16px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 10px 14px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--indigo);
+    }
+
+    .search-input::placeholder {
+      color: var(--muted);
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0 16px;
+    }
+
+    .nav-section {
+      margin-bottom: 24px;
+    }
+
+    .nav-section-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      padding: 0 8px 8px;
+    }
+
+    .nav-item {
+      display: block;
+      padding: 8px 12px;
+      color: var(--muted-light);
+      text-decoration: none;
+      font-size: 14px;
+      border-radius: 6px;
+      transition: all 0.2s;
+      margin-bottom: 2px;
+    }
+
+    .nav-item:hover {
+      background: var(--surface-hover);
+      color: var(--text);
+    }
+
+    .nav-item.active {
+      background: rgba(99, 102, 241, 0.1);
+      color: var(--indigo);
+      font-weight: 500;
+    }
+
+    .nav-subitem {
+      display: block;
+      padding: 6px 12px 6px 28px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+      border-radius: 6px;
+      transition: all 0.2s;
+      margin-bottom: 1px;
+    }
+
+    .nav-subitem:hover {
+      background: var(--surface-hover);
+      color: var(--text);
+    }
+
+    .nav-subitem.active {
+      color: var(--indigo);
+    }
+
+    /* Main content */
+    .main-content {
+      flex: 1;
+      margin-left: 280px;
+      min-height: 100vh;
+    }
+
+    .content-wrapper {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 48px 64px 48px 48px;
+    }
+
+    /* Header */
+    .docs-header {
+      margin-bottom: 48px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .breadcrumbs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .breadcrumbs a {
+      color: var(--muted-light);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .breadcrumbs a:hover {
+      color: var(--text);
+    }
+
+    .docs-title {
+      font-size: 42px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, var(--text) 0%, var(--muted-light) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .docs-subtitle {
+      font-size: 18px;
+      color: var(--muted-light);
+      max-width: 600px;
+    }
+
+    /* Content sections */
+    .section {
+      margin-bottom: 64px;
+    }
+
+    .section-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-title a {
+      color: var(--muted);
+      text-decoration: none;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .section-title:hover a {
+      opacity: 1;
+    }
+
+    .section-content {
+      color: var(--muted-light);
+      font-size: 16px;
+      line-height: 1.8;
+    }
+
+    .section-content p {
+      margin-bottom: 16px;
+    }
+
+    .section-content h3 {
+      font-size: 20px;
+      font-weight: 600;
+      margin: 32px 0 16px;
+      color: var(--text);
+    }
+
+    .section-content h4 {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 24px 0 12px;
+      color: var(--text);
+    }
+
+    .section-content ul, .section-content ol {
+      margin: 16px 0;
+      padding-left: 24px;
+    }
+
+    .section-content li {
+      margin-bottom: 8px;
+    }
+
+    .section-content a {
+      color: var(--indigo);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s;
+    }
+
+    .section-content a:hover {
+      border-bottom-color: var(--indigo);
+    }
+
+    /* Code blocks */
+    .code-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin: 24px 0;
+      overflow: hidden;
+    }
+
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .code-language {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .copy-button {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--muted-light);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .copy-button:hover {
+      background: var(--surface-hover);
+      color: var(--text);
+    }
+
+    .copy-button.copied {
+      color: var(--emerald);
+      border-color: var(--emerald);
+    }
+
+    .code-content {
+      padding: 20px;
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+      background: var(--surface);
+    }
+
+    .code-content code {
+      color: var(--muted-light);
+      display: block;
+      white-space: pre;
+    }
+
+    .code-content .keyword { color: #c792ea; font-weight: 500; }
+    .code-content .string { color: #c3e88d; }
+    .code-content .comment { color: #546e7a; font-style: italic; }
+    .code-content .number { color: #f78c6c; }
+    .code-content .function { color: #82aaff; }
+    .code-content .operator { color: #89ddff; }
+    .code-content .property { color: #f07178; }
+    .code-content .tag { color: #f07178; }
+    .code-content .attribute { color: #ffcb6b; }
+
+    /* Callout boxes */
+    .callout {
+      padding: 20px 24px;
+      border-radius: 12px;
+      margin: 24px 0;
+      border-left: 4px solid;
+    }
+
+    .callout.info {
+      background: rgba(6, 182, 212, 0.05);
+      border-color: var(--cyan);
+    }
+
+    .callout.warning {
+      background: rgba(245, 158, 11, 0.05);
+      border-color: var(--amber);
+    }
+
+    .callout.success {
+      background: rgba(16, 185, 129, 0.05);
+      border-color: var(--emerald);
+    }
+
+    .callout-title {
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .callout-content {
+      color: var(--muted-light);
+      font-size: 14px;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      margin: 24px 0;
+      background: var(--surface);
+      padding: 4px;
+      border-radius: 10px;
+      width: fit-content;
+    }
+
+    .tab {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      background: transparent;
+    }
+
+    .tab:hover {
+      color: var(--text);
+    }
+
+    .tab.active {
+      background: var(--bg);
+      color: var(--text);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Table of contents */
+    .toc {
+      position: fixed;
+      right: 32px;
+      top: 200px;
+      width: 180px;
+      display: none;
+      z-index: 10;
+    }
+
+    @media (min-width: 1400px) {
+      .toc {
+        display: block;
+      }
+    }
+
+    .toc-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .toc-link {
+      display: block;
+      padding: 6px 0;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+      transition: color 0.2s;
+      border-left: 2px solid transparent;
+      padding-left: 12px;
+    }
+
+    .toc-link:hover {
+      color: var(--text);
+    }
+
+    .toc-link.active {
+      color: var(--indigo);
+      border-left-color: var(--indigo);
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s;
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+
+      .content-wrapper {
+        padding: 32px 24px;
+      }
+
+      .docs-title {
+        font-size: 32px;
+      }
+
+      .mobile-menu-button {
+        display: flex;
+      }
+    }
+
+    @media (min-width: 1025px) {
+      .mobile-menu-button {
+        display: none;
+      }
+    }
+
+    .mobile-menu-button {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 100;
+      padding: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    /* Architecture diagram */
+    .architecture-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      margin: 24px 0;
+      text-align: center;
+    }
+
+    .diagram-flow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .diagram-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .diagram-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    .diagram-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--muted-light);
+    }
+
+    .diagram-arrow {
+      color: var(--muted);
+      font-size: 24px;
+    }
+
+    /* Step cards */
+    .step-cards {
+      display: grid;
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .step-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      gap: 16px;
+      transition: border-color 0.2s;
+    }
+
+    .step-card:hover {
+      border-color: var(--border-hover);
+    }
+
+    .step-number {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--indigo), var(--purple));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .step-content {
+      flex: 1;
+    }
+
+    .step-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+
+    .step-description {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* FAQ */
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+
+    .faq-question {
+      padding: 16px 20px;
+      background: var(--surface);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+
+    .faq-question:hover {
+      background: var(--surface-hover);
+    }
+
+    .faq-answer {
+      padding: 16px 20px;
+      color: var(--muted-light);
+      font-size: 14px;
+      display: none;
+    }
+
+    .faq-item.open .faq-answer {
+      display: block;
+    }
+
+    .faq-icon {
+      transition: transform 0.2s;
+    }
+
+    .faq-item.open .faq-icon {
+      transform: rotate(180deg);
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--border-hover);
+    }
+  </style>
+</head>
+<body>
+  <button class="mobile-menu-button" onclick="toggleSidebar()">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M3 12h18M3 6h18M3 18h18"/>
+    </svg>
+  </button>
+
+  <div class="docs-container">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <svg viewBox="0 0 100 100" fill="none">
+            <defs>
+              <linearGradient id="shieldGrad" x1="50" y1="8" x2="50" y2="90" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#22d3ee"/>
+                <stop offset="50%" stop-color="#6366f1"/>
+                <stop offset="100%" stop-color="#8b5cf6"/>
+              </linearGradient>
+              <linearGradient id="shieldGlow" x1="50" y1="5" x2="50" y2="95" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#06b6d4"/>
+                <stop offset="100%" stop-color="#8b5cf6"/>
+              </linearGradient>
+              <linearGradient id="kGrad" x1="38" y1="32" x2="58" y2="68" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#22d3ee"/>
+                <stop offset="100%" stop-color="#e0f2fe"/>
+              </linearGradient>
+            </defs>
+            <path d="M50 5 L90 22 V55 C90 75 75 90 50 95 C25 90 10 75 10 55 V22 L50 5Z" fill="url(#shieldGlow)" opacity="0.15"/>
+            <path d="M50 8 L86 24 V53 C86 71 73 85 50 90 C27 85 14 71 14 53 V24 L50 8Z" stroke="url(#shieldGrad)" stroke-width="4" stroke-linejoin="round"/>
+            <path d="M50 16 L78 28 V49 C78 64 67 76 50 80 C33 76 22 64 22 49 V28 L50 16Z" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.3"/>
+            <path d="M38 32 V68 M38 50 L56 32 M38 50 L58 68" stroke="url(#kGrad)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="56" cy="32" r="3.5" fill="#22d3ee"/>
+            <circle cx="58" cy="68" r="3.5" fill="#8b5cf6"/>
+            <circle cx="38" cy="50" r="3.5" fill="#6366f1"/>
+          </svg>
+          Kavach AI
+        </div>
+      </div>
+
+      <div class="sidebar-search">
+        <input type="text" class="search-input" placeholder="Search documentation..." id="searchInput">
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Getting Started</div>
+          <a href="#introduction" class="nav-item active">Introduction</a>
+          <a href="#installation" class="nav-item">Installation</a>
+          <a href="#quick-start" class="nav-item">Quick Start</a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Core Concepts</div>
+          <a href="#architecture" class="nav-item">Architecture</a>
+          <a href="#security-pipeline" class="nav-item">Security Pipeline</a>
+          <a href="#trust-engine" class="nav-item">Trust Engine</a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Integration</div>
+          <a href="#sdk-integration" class="nav-item">SDK Integration</a>
+          <a href="#mcp-integration" class="nav-item">MCP Integration</a>
+          <a href="#rest-api" class="nav-item">REST API</a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Configuration</div>
+          <a href="#policies" class="nav-item">Policies</a>
+          <a href="#runtime-dashboard" class="nav-item">Runtime Dashboard</a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Reference</div>
+          <a href="#code-examples" class="nav-item">Code Examples</a>
+          <a href="#faq" class="nav-item">FAQ</a>
+          <a href="#troubleshooting" class="nav-item">Troubleshooting</a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="content-wrapper">
+        <!-- Header -->
+        <header class="docs-header">
+          <nav class="breadcrumbs">
+            <a href="/">Kavach AI</a>
+            <span>/</span>
+            <span>Documentation</span>
+          </nav>
+          <h1 class="docs-title">Developer Documentation</h1>
+          <p class="docs-subtitle">Complete guide to integrating Kavach AI into your autonomous agent infrastructure for runtime security and threat protection.</p>
+        </header>
+
+        <!-- Introduction -->
+        <section id="introduction" class="section">
+          <h2 class="section-title">
+            Introduction
+            <a href="#introduction">#</a>
+          </h2>
+          <div class="section-content">
+            <p>Kavach AI is a zero-trust runtime firewall designed specifically for autonomous AI agents. It intercepts, analyzes, and secures every agent action before it reaches your infrastructure, providing real-time threat detection and policy enforcement.</p>
+            
+            <div class="callout info">
+              <div class="callout-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M12 16v-4M12 8h.01"/>
+                </svg>
+                What is Kavach AI?
+              </div>
+              <div class="callout-content">
+                Kavach AI acts as a security proxy between your AI agents and their target systems (databases, APIs, file systems). It analyzes each action for malicious intent, prompt injection attempts, and policy violations before allowing or blocking the request.
+              </div>
+            </div>
+
+            <h3>Key Features</h3>
+            <ul>
+              <li><strong>Real-time Threat Detection</strong> — Analyzes agent actions in sub-2ms latency</li>
+              <li><strong>Prompt Injection Protection</strong> — Detects and blocks injection attempts</li>
+              <li><strong>Policy Engine</strong> — Enforce custom security policies per agent</li>
+              <li><strong>Trust Scoring</strong> — Dynamic trust scores based on agent behavior</li>
+              <li><strong>MCP Compatible</strong> — Works with Model Context Protocol servers</li>
+              <li><strong>Enterprise Ready</strong> — Self-hosted with full data control</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Installation -->
+        <section id="installation" class="section">
+          <h2 class="section-title">
+            Installation
+            <a href="#installation">#</a>
+          </h2>
+          <div class="section-content">
+            <p>Install Kavach AI using your preferred package manager:</p>
+
+            <div class="tabs">
+              <button class="tab active" onclick="switchTab('install', 'pip')">pip</button>
+              <button class="tab" onclick="switchTab('install', 'npm')">npm</button>
+              <button class="tab" onclick="switchTab('install', 'go')">go</button>
+            </div>
+
+            <div id="install-pip" class="tab-content active">
+              <div class="code-block">
+                <div class="code-header">
+                  <span class="code-language">Python</span>
+                  <button class="copy-button" onclick="copyCode(this)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                    </svg>
+                    Copy
+                  </button>
+                </div>
+                <div class="code-content">
+                  <code><span class="comment"># Install via pip</span><br/>
+<span class="function">pip</span> install kavach-ai<br/>
+<br/>
+<span class="comment"># Or with poetry</span><br/>
+<span class="function">poetry</span> add kavach-ai</code>
+                </div>
+              </div>
+            </div>
+
+            <div id="install-npm" class="tab-content">
+              <div class="code-block">
+                <div class="code-header">
+                  <span class="code-language">JavaScript/TypeScript</span>
+                  <button class="copy-button" onclick="copyCode(this)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                    </svg>
+                    Copy
+                  </button>
+                </div>
+                <div class="code-content">
+                  <code><span class="comment"># Install via npm</span><br/>
+<span class="function">npm</span> install @kavach-ai/sdk<br/>
+<br/>
+<span class="comment"># Or with yarn</span><br/>
+<span class="function">yarn</span> add @kavach-ai/sdk<br/>
+<br/>
+<span class="comment"># Or with pnpm</span><br/>
+<span class="function">pnpm</span> add @kavach-ai/sdk</code>
+                </div>
+              </div>
+            </div>
+
+            <div id="install-go" class="tab-content">
+              <div class="code-block">
+                <div class="code-header">
+                  <span class="code-language">Go</span>
+                  <button class="copy-button" onclick="copyCode(this)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                    </svg>
+                    Copy
+                  </button>
+                </div>
+                <div class="code-content">
+                  <code><span class="function">go</span> get github.com/kavach-ai/sdk</code>
+                </div>
+              </div>
+            </div>
+
+            <h3>System Requirements</h3>
+            <ul>
+              <li>Python 3.8+ or Node.js 16+ or Go 1.19+</li>
+              <li>2GB RAM minimum, 4GB recommended</li>
+              <li>Network access to Kavach AI API endpoint</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Quick Start -->
+        <section id="quick-start" class="section">
+          <h2 class="section-title">
+            Quick Start
+            <a href="#quick-start">#</a>
+          </h2>
+          <div class="section-content">
+            <p>Get up and running with Kavach AI in under 5 minutes:</p>
+
+            <div class="step-cards">
+              <div class="step-card">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                  <div class="step-title">Install the SDK</div>
+                  <div class="step-description">Install Kavach AI using your package manager</div>
+                </div>
+              </div>
+
+              <div class="step-card">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                  <div class="step-title">Initialize the Proxy</div>
+                  <div class="step-description">Create a KavachProxy instance with your API key</div>
+                </div>
+              </div>
+
+              <div class="step-card">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                  <div class="step-title">Wrap Your Agent</div>
+                  <div class="step-description">Wrap your MCP client or agent with the proxy</div>
+                </div>
+              </div>
+
+              <div class="step-card">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                  <div class="step-title">Monitor & Configure</div>
+                  <div class="step-description">Use the dashboard to monitor and configure policies</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="callout success">
+              <div class="callout-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                  <polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+                First integration complete!
+              </div>
+              <div class="callout-content">
+                Your agent actions are now being analyzed in real-time. Check the Runtime Dashboard to see threat analysis and policy decisions.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Architecture -->
+        <section id="architecture" class="section">
+          <h2 class="section-title">
+            Architecture
+            <a href="#architecture">#</a>
+          </h2>
+          <div class="section-content">
+            <p>Kavach AI is designed as a transparent security proxy that sits between your AI agents and their target systems:</p>
+
+            <div class="architecture-diagram">
+              <div class="diagram-flow">
+                <div class="diagram-node">
+                  <div class="diagram-icon" style="background: linear-gradient(135deg, #6366f1, #8b5cf6);">
+                    🤖
+                  </div>
+                  <div class="diagram-label">AI Agent</div>
+                </div>
+                <div class="diagram-arrow">→</div>
+                <div class="diagram-node">
+                  <div class="diagram-icon" style="background: linear-gradient(135deg, #10b981, #06b6d4);">
+                    🛡️
+                  </div>
+                  <div class="diagram-label">Kavach AI</div>
+                </div>
+                <div class="diagram-arrow">→</div>
+                <div class="diagram-node">
+                  <div class="diagram-icon" style="background: linear-gradient(135deg, #06b6d4, #3b82f6);">
+                    🗄️
+                  </div>
+                  <div class="diagram-label">Target System</div>
+                </div>
+              </div>
+            </div>
+
+            <h3>Components</h3>
+            <ul>
+              <li><strong>Intent Engine</strong> — Analyzes the intent behind agent actions</li>
+              <li><strong>Risk Engine</strong> — Calculates risk scores based on action context</li>
+              <li><strong>Policy Engine</strong> — Enforces custom security policies</li>
+              <li><strong>Trust Engine</strong> — Maintains dynamic trust scores for agents</li>
+              <li><strong>Memory Inspector</strong> — Monitors agent memory for sensitive data</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Security Pipeline -->
+        <section id="security-pipeline" class="section">
+          <h2 class="section-title">
+            Security Pipeline
+            <a href="#security-pipeline">#</a>
+          </h2>
+          <div class="section-content">
+            <p>Every agent action goes through a comprehensive security pipeline:</p>
+
+            <div class="code-block">
+              <div class="code-header">
+                <span class="code-language">Security Pipeline Flow</span>
+              </div>
+              <div class="code-content">
+                <code><span class="function">Agent Action</span> 
+  → <span class="function">Intent Analysis</span> 
+  → <span class="function">Prompt Injection Scan</span> 
+  → <span class="function">Risk Assessment</span> 
+  → <span class="function">Policy Check</span> 
+  → <span class="function">Trust Score Update</span> 
+  → <span class="function">Decision</span> 
+  → <span class="function">Forward/Block</span></code>
+              </div>
+            </div>
+
+            <h3>Pipeline Stages</h3>
+            <ol>
+              <li><strong>Intent Analysis</strong> — Classifies the action's purpose (benign, malicious, suspicious)</li>
+              <li><strong>Prompt Injection Scan</strong> — Detects injection attempts in the prompt</li>
+              <li><strong>Risk Assessment</strong> — Calculates risk score (0-100) based on action parameters</li>
+              <li><strong>Policy Check</strong> — Validates against configured security policies</li>
+              <li><strong>Trust Score Update</strong> — Updates agent's trust score based on action</li>
+              <li><strong>Decision</strong> — ALLOW or BLOCK based on all checks</li>
+            </ol>
+          </div>
+        </section>
+
+        <!-- Trust Engine -->
+        <section id="trust-engine" class="section">
+          <h2 class="section-title">
+            Trust Engine
+            <a href="#trust-engine">#</a>
+          </h2>
+          <div class="section-content">
+            <p>The Trust Engine maintains dynamic trust scores for each agent based on their behavior patterns:</p>
+
+            <div class="callout warning">
+              <div class="callout-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                  <line x1="12" y1="9" x2="12" y2="13"/>
+                  <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+                Trust Score Impact
+              </div>
+              <div class="callout-content">
+                Trust scores range from 0-100. Low scores (<50) trigger additional scrutiny, while high scores (>80) allow faster processing. Scores are updated based on action outcomes and policy violations.
+              </div>
+            </div>
+
+            <h3>Trust Factors</h3>
+            <ul>
+              <li><strong>Action History</strong> — Past actions and their outcomes</li>
+              <li><strong>Policy Compliance</strong> — Adherence to configured policies</li>
+              <li><strong>Time Patterns</strong> — Unusual timing or frequency</li>
+              <li><strong>Resource Access</strong> — Sensitivity of accessed resources</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- SDK Integration -->
+        <section id="sdk-integration" class="section">
+          <h2 class="section-title">
+            SDK Integration
+            <a href="#sdk-integration">#</a>
+          </h2>
+          <div class="section-content">
+            <p>Integrate Kavach AI into your application using our SDKs:</p>
+
+            <div class="tabs">
+              <button class="tab active" onclick="switchTab('sdk', 'python')">Python</button>
+              <button class="tab" onclick="switchTab('sdk', 'javascript')">JavaScript</button>
+              <button class="tab" onclick="switchTab('sdk', 'typescript')">TypeScript</button>
+            </div>
+
+            <div id="sdk-python" class="tab-content active">
+              <div class="code-block">
+                <div class="code-header">
+                  <span class="code-language">Python</span>
+                  <button class="copy-button" onclick="copyCode(this)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                    </svg>
+                    Copy
+                  </button>
+                </div>
+                <div class="code-content">
+                  <code><span class="keyword">from</span> kavach_ai <span class="keyword">import</span> KavachProxy<br/>
+<br/>
+<span class="comment"># Initialize the proxy</span><br/>
+proxy = KavachProxy(<br/>
+    endpoint=<span class="string">"https://api.kavach.ai/v1"</span>,<br/>
+    api_key=<span class="string">"your-api-key"</span><br/>
+)<br/>
+<br/>
+<span class="comment"># Wrap your MCP client</span><br/>
+mcp_client = proxy.wrap(mcp_client)<br/>
+<br/>
+<span class="comment"># Tool calls are now intercepted</span><br/>
+result = mcp_client.call_tool(<br/>
+    name=<span class="string">"database_query"</span>,<br/>
+    args={<span class="string">"query"</span>: <span class="string">"SELECT * FROM users"</span>}<br/>
+)<br/>
+<br/>
+<span class="comment"># Check the decision</span><br/>
+<span class="keyword">if</span> result.decision == <span class="string">"ALLOW"</span>:<br/>
+    <span class="keyword">print</span>(<span class="string">f"Action allowed. Risk score: {result.risk_score}"</span>)<br/>
+<span class="keyword">else</span>:<br/>
+    <span class="keyword">print</span>(<span class="string">f"Action blocked. Reason: {result.reason}"</span>)</code>
+                </div>
+              </div>
+            </div>
+
+            <div id="sdk-javascript" class="tab-content">
+              <div class="code-block">
+                <div class="code-header">
+                  <span class="code-language">JavaScript</span>
+                  <button class="copy-button" onclick="copyCode(this)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                    </svg>
+                    Copy
+                  </button>
+                </div>
+                <div class="code-content">
+                  <code><span class="keyword">const</span> { KavachProxy } = <span class="function">require</span>(<span class="string">'@kavach-ai/sdk'</span>);<br/>
+<br/>
+<span class="comment">// Initialize the proxy</span><br/>
+<span class="keyword">const</span> proxy = <span class="keyword">new</span> <span class="function">KavachProxy</span>({<br/>
+  endpoint: <span class="string">'https://api.kavach.ai/v1'</span>,<br/>
+  apiKey: <span class="string">'your-api-key'</span><br/>
+});<br/>
+<br/>
+<span class="comment">// Wrap your MCP client</span><br/>
+<span class="keyword">const</span> mcpClient = proxy.<span class="function">wrap</span>(mcpClient);<br/>
+<br/>
+<span class="comment">// Tool calls are now intercepted</span><br/>
+<span class="keyword">const</span> result = <span class="keyword">await</span> mcpClient.<span class="function">callTool</span>({<br/>
+  name: <span class="string">'database_query'</span>,<br/>
+  args: { query: <span class="string">'SELECT * FROM users'</span> }<br/>
+});<br/>
+<br/>
+<span class="comment">// Check the decision</span><br/>
+<span class="keyword">if</span> (result.decision === <span class="string">'ALLOW'</span>) {<br/>
+  <span class="function">console</span>.<span class="function">log</span>(<span class="string">`Action allowed. Risk score: ${result.riskScore}`</span>);<br/>
+} <span class="keyword">else</span> {<br/>
+  <span class="function">console</span>.<span class="function">log</span>(<span class="string">`Action blocked. Reason: ${result.reason}`</span>);<br/>
+}</code>
+                </div>
+              </div>
+            </div>
+
+            <div id="sdk-typescript" class="tab-content">
+              <div class="code-block">
+                <div class="code-header">
+                  <span class="code-language">TypeScript</span>
+                  <button class="copy-button" onclick="copyCode(this)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                    </svg>
+                    Copy
+                  </button>
+                </div>
+                <div class="code-content">
+                  <code><span class="keyword">import</span> { KavachProxy, SecurityResult } <span class="keyword">from</span> <span class="string">'@kavach-ai/sdk'</span>;<br/>
+<br/>
+<span class="comment">// Initialize the proxy</span><br/>
+<span class="keyword">const</span> proxy = <span class="keyword">new</span> <span class="function">KavachProxy</span>({<br/>
+  endpoint: <span class="string">'https://api.kavach.ai/v1'</span>,<br/>
+  apiKey: <span class="string">'your-api-key'</span><br/>
+});<br/>
+<br/>
+<span class="comment">// Wrap your MCP client</span><br/>
+<span class="keyword">const</span> mcpClient = proxy.<span class="function">wrap</span>(mcpClient);<br/>
+<br/>
+<span class="comment">// Tool calls are now intercepted</span><br/>
+<span class="keyword">const</span> result: SecurityResult = <span class="keyword">await</span> mcpClient.<span class="function">callTool</span>({<br/>
+  name: <span class="string">'database_query'</span>,<br/>
+  args: { query: <span class="string">'SELECT * FROM users'</span> }<br/>
+});<br/>
+<br/>
+<span class="comment">// Check the decision</span><br/>
+<span class="keyword">if</span> (result.decision === <span class="string">'ALLOW'</span>) {<br/>
+  <span class="function">console</span>.<span class="function">log</span>(<span class="string">`Action allowed. Risk score: ${result.riskScore}`</span>);<br/>
+} <span class="keyword">else</span> {<br/>
+  <span class="function">console</span>.<span class="function">log</span>(<span class="string">`Action blocked. Reason: ${result.reason}`</span>);<br/>
+}</code>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- MCP Integration -->
+        <section id="mcp-integration" class="section">
+          <h2 class="section-title">
+            MCP Integration
+            <a href="#mcp-integration">#</a>
+          </h2>
+          <div class="section-content">
+            <p>Kavach AI provides native support for the Model Context Protocol (MCP). Configure your MCP server to route through Kavach AI:</p>
+
+            <div class="code-block">
+              <div class="code-header">
+                <span class="code-language">MCP Configuration</span>
+                <button class="copy-button" onclick="copyCode(this)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                  </svg>
+                  Copy
+                </button>
+              </div>
+              <div class="code-content">
+                <code><span class="comment"># mcp_config.json</span><br/>
+{<br/>
+  <span class="string">"proxy"</span>: {<br/>
+    <span class="string">"enabled"</span>: <span class="keyword">true</span>,<br/>
+    <span class="string">"endpoint"</span>: <span class="string">"https://api.kavach.ai/v1"</span>,<br/>
+    <span class="string">"api_key"</span>: <span class="string">"your-api-key"</span>,<br/>
+    <span class="string">"timeout"</span>: <span class="number">2000</span><br/>
+  },<br/>
+  <span class="string">"servers"</span>: [<br/>
+    {<br/>
+      <span class="string">"name"</span>: <span class="string">"database"</span>,<br/>
+      <span class="string">"enabled"</span>: <span class="keyword">true</span>,<br/>
+      <span class="string">"policies"</span>: [<span class="string">"read-only"</span>]<br/>
+    }<br/>
+  ]<br/>
+}</code>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- REST API -->
+        <section id="rest-api" class="section">
+          <h2 class="section-title">
+            REST API
+            <a href="#rest-api">#</a>
+          </h2>
+          <div class="section-content">
+            <p>Kavach AI provides a REST API for direct integration:</p>
+
+            <h3>Endpoints</h3>
+            <div class="code-block">
+              <div class="code-header">
+                <span class="code-language">API Endpoints</span>
+              </div>
+              <div class="code-content">
+                <code><span class="comment"># Analyze an action</span><br/>
+POST /v1/analyze<br/>
+{<br/>
+  <span class="string">"agent_id"</span>: <span class="string">"agent-123"</span>,<br/>
+  <span class="string">"action"</span>: {<br/>
+    <span class="string">"type"</span>: <span class="string">"tool_call"</span>,<br/>
+    <span class="string">"name"</span>: <span class="string">"database_query"</span>,<br/>
+    <span class="string">"args"</span>: { <span class="string">"query"</span>: <span class="string">"SELECT * FROM users"</span> }<br/>
+  }<br/>
+}<br/>
+<br/>
+<span class="comment"># Response</span><br/>
+{<br/>
+  <span class="string">"decision"</span>: <span class="string">"ALLOW"</span>,<br/>
+  <span class="string">"risk_score"</span>: <span class="number">18.5</span>,<br/>
+  <span class="string">"intent"</span>: <span class="string">"benign"</span>,<br/>
+  <span class="string">"analysis"</span>: { ... }<br/>
+}</code>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Policies -->
+        <section id="policies" class="section">
+          <h2 class="section-title">
+            Policies
+            <a href="#policies">#</a>
+          </h2>
+          <div class="section-content">
+            <p>Configure security policies to control agent behavior:</p>
+
+            <div class="code-block">
+              <div class="code-header">
+                <span class="code-language">Policy Configuration</span>
+                <button class="copy-button" onclick="copyCode(this)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                  </svg>
+                  Copy
+                </button>
+              </div>
+              <div class="code-content">
+                <code>{<br/>
+  <span class="string">"policies"</span>: [<br/>
+    {<br/>
+      <span class="string">"name"</span>: <span class="string">"read-only"</span>,<br/>
+      <span class="string">"rules"</span>: [<br/>
+        {<br/>
+          <span class="string">"action"</span>: <span class="string">"database.query"</span>,<br/>
+          <span class="string">"allowed"</span>: [<span class="string">"SELECT"</span>],<br/>
+          <span class="string">"blocked"</span>: [<span class="string">"INSERT"</span>, <span class="string">"UPDATE"</span>, <span class="string">"DELETE"</span>]<br/>
+        }<br/>
+      ]<br/>
+    },<br/>
+    {<br/>
+      <span class="string">"name"</span>: <span class="string">"rate-limit"</span>,<br/>
+      <span class="string">"rules"</span>: [<br/>
+        {<br/>
+          <span class="string">"max_requests"</span>: <span class="number">100</span>,<br/>
+          <span class="string">"window"</span>: <span class="string">"1m"</span><br/>
+        }<br/>
+      ]<br/>
+    }<br/>
+  ]<br/>
+}</code>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Runtime Dashboard -->
+        <section id="runtime-dashboard" class="section">
+          <h2 class="section-title">
+            Runtime Dashboard
+            <a href="#runtime-dashboard">#</a>
+          </h2>
+          <div class="section-content">
+            <p>Monitor your agents in real-time using the Runtime Dashboard:</p>
+
+            <h3>Dashboard Features</h3>
+            <ul>
+              <li><strong>Live Monitoring</strong> — Real-time view of all agent actions</li>
+              <li><strong>Threat Detection</strong> — Instant alerts for suspicious activities</li>
+              <li><strong>Policy Management</strong> — Create and update security policies</li>
+              <li><strong>Trust Scores</strong> — Track agent trust scores over time</li>
+              <li><strong>Audit Logs</strong> — Complete history of all decisions</li>
+            </ul>
+
+            <div class="callout info">
+              <div class="callout-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                  <line x1="8" y1="21" x2="16" y2="21"/>
+                  <line x1="12" y1="17" x2="12" y2="21"/>
+                </svg>
+                Access the Dashboard
+              </div>
+              <div class="callout-content">
+                Navigate to the Runtime Dashboard at <code>/runtime</code> to monitor your agents in real-time.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Code Examples -->
+        <section id="code-examples" class="section">
+          <h2 class="section-title">
+            Code Examples
+            <a href="#code-examples">#</a>
+          </h2>
+          <div class="section-content">
+            <p>Additional code examples for common use cases:</p>
+
+            <h3>Custom Policy Enforcement</h3>
+            <div class="code-block">
+              <div class="code-header">
+                <span class="code-language">Python</span>
+                <button class="copy-button" onclick="copyCode(this)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                  </svg>
+                  Copy
+                </button>
+              </div>
+              <div class="code-content">
+                <code><span class="keyword">from</span> kavach_ai <span class="keyword">import</span> KavachProxy, Policy<br/>
+<br/>
+<span class="comment"># Define custom policy</span><br/>
+policy = Policy(<br/>
+    name=<span class="string">"strict"</span>,<br/>
+    rules=[<br/>
+        {<span class="string">"action"</span>: <span class="string">"*"</span>, <span class="string">"max_risk_score"</span>: <span class="number">50</span>},<br/>
+        {<span class="string">"action"</span>: <span class="string">"database.*"</span>, <span class="string">"allowed"</span>: [<span class="string">"SELECT"</span>]}<br/>
+    ]<br/>
+)<br/>
+<br/>
+proxy = KavachProxy(<br/>
+    endpoint=<span class="string">"https://api.kavach.ai/v1"</span>,<br/>
+    api_key=<span class="string">"your-api-key"</span>,<br/>
+    policy=policy<br/>
+)</code>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- FAQ -->
+        <section id="faq" class="section">
+          <h2 class="section-title">
+            FAQ
+            <a href="#faq">#</a>
+          </h2>
+          <div class="section-content">
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFaq(this)">
+                What is the latency impact of Kavach AI?
+                <svg class="faq-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </div>
+              <div class="faq-answer">
+                Kavach AI adds less than 2ms of latency to each action. Our optimized pipeline ensures minimal performance impact while providing comprehensive security analysis.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFaq(this)">
+                Can I use Kavach AI with any AI framework?
+                <svg class="faq-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </div>
+              <div class="faq-answer">
+                Yes, Kavach AI works with any AI framework that supports MCP or can be integrated via our REST API. We have specific SDKs for Python, JavaScript, TypeScript, and Go.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFaq(this)">
+                Is my data secure with Kavach AI?
+                <svg class="faq-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </div>
+              <div class="faq-answer">
+                Absolutely. Kavach AI is designed for enterprise security. You can self-host the entire stack, and all data remains within your infrastructure. We never store or transmit your data externally.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFaq(this)">
+                How do I get an API key?
+                <svg class="faq-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </div>
+              <div class="faq-answer">
+                Sign up at kavach-ai.dev to get your API key. The free tier includes 10,000 requests per month. Enterprise plans offer unlimited requests and dedicated support.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Troubleshooting -->
+        <section id="troubleshooting" class="section">
+          <h2 class="section-title">
+            Troubleshooting
+            <a href="#troubleshooting">#</a>
+          </h2>
+          <div class="section-content">
+            <h3>Common Issues</h3>
+
+            <h4>Connection Timeout</h4>
+            <p>If you're experiencing connection timeouts, check your network settings and ensure the API endpoint is accessible. Try increasing the timeout parameter in your configuration.</p>
+
+            <h4>Invalid API Key</h4>
+            <p>Verify your API key is correct and hasn't expired. Check your dashboard to regenerate the key if needed.</p>
+
+            <h4>Policy Not Blocking Expected Actions</h4>
+            <p>Review your policy rules to ensure they match the action patterns you want to block. Use the test endpoint to validate your policies.</p>
+
+            <div class="callout warning">
+              <div class="callout-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <line x1="12" y1="8" x2="12" y2="12"/>
+                  <line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+                Need Help?
+              </div>
+              <div class="callout-content">
+                If you're still experiencing issues, reach out to our support team at support@kavach-ai.dev or join our Discord community for real-time assistance.
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Table of Contents -->
+    <aside class="toc">
+      <div class="toc-title">On this page</div>
+      <a href="#introduction" class="toc-link active">Introduction</a>
+      <a href="#installation" class="toc-link">Installation</a>
+      <a href="#quick-start" class="toc-link">Quick Start</a>
+      <a href="#architecture" class="toc-link">Architecture</a>
+      <a href="#security-pipeline" class="toc-link">Security Pipeline</a>
+      <a href="#trust-engine" class="toc-link">Trust Engine</a>
+      <a href="#sdk-integration" class="toc-link">SDK Integration</a>
+      <a href="#mcp-integration" class="toc-link">MCP Integration</a>
+      <a href="#rest-api" class="toc-link">REST API</a>
+      <a href="#policies" class="toc-link">Policies</a>
+      <a href="#runtime-dashboard" class="toc-link">Runtime Dashboard</a>
+      <a href="#code-examples" class="toc-link">Code Examples</a>
+      <a href="#faq" class="toc-link">FAQ</a>
+      <a href="#troubleshooting" class="toc-link">Troubleshooting</a>
+    </aside>
+  </div>
+
+  <script>
+    // Tab switching
+    function switchTab(group, tab) {
+      document.querySelectorAll(`[id^="${group}-"]`).forEach(el => {
+        el.classList.remove('active');
+      });
+      document.getElementById(`${group}-${tab}`).classList.add('active');
+      
+      const tabs = event.target.parentElement.querySelectorAll('.tab');
+      tabs.forEach(t => t.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+
+    // Copy code
+    function copyCode(button) {
+      const codeBlock = button.closest('.code-block');
+      const code = codeBlock.querySelector('.code-content code').textContent;
+      
+      navigator.clipboard.writeText(code).then(() => {
+        button.classList.add('copied');
+        button.innerHTML = `
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          Copied!
+        `;
+        
+        setTimeout(() => {
+          button.classList.remove('copied');
+          button.innerHTML = `
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+            </svg>
+            Copy
+          `;
+        }, 2000);
+      });
+    }
+
+    // FAQ toggle
+    function toggleFaq(element) {
+      const faqItem = element.closest('.faq-item');
+      faqItem.classList.toggle('open');
+    }
+
+    // Sidebar toggle
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+    }
+
+    // Active nav highlighting
+    const sections = document.querySelectorAll('section[id]');
+    const navItems = document.querySelectorAll('.nav-item');
+    const tocLinks = document.querySelectorAll('.toc-link');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        if (scrollY >= sectionTop - 100) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      navItems.forEach(item => {
+        item.classList.remove('active');
+        if (item.getAttribute('href') === `#${current}`) {
+          item.classList.add('active');
+        }
+      });
+
+      tocLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+          link.classList.add('active');
+        }
+      });
+    });
+
+    // Search functionality
+    const searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase();
+      const navItems = document.querySelectorAll('.nav-item, .nav-subitem');
+      
+      navItems.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        if (text.includes(query)) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -65,11 +65,19 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-[#050816]">
       {/* Header */}
       <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2 bg-gradient-to-r from-[#4F7CFF] to-[#8B5CF6] bg-clip-text text-transparent">
-            Mission Control
-          </h1>
-          <p className="text-gray-400">Real-time AI agent security monitoring</p>
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h1 className="text-4xl font-bold text-white mb-2 bg-gradient-to-r from-[#4F7CFF] to-[#8B5CF6] bg-clip-text text-transparent">
+              Mission Control
+            </h1>
+            <p className="text-gray-400">Real-time AI agent security monitoring</p>
+          </div>
+          <button
+            onClick={() => window.location.href = '/agents'}
+            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#4F7CFF] to-[#8B5CF6] text-white rounded-lg font-semibold hover:opacity-90 transition-all shadow-lg shadow-[#4F7CFF]/25"
+          >
+            Manage Agents
+          </button>
         </div>
 
         {/* Runtime Security Center Callout */}

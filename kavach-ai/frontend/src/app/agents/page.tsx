@@ -25,7 +25,9 @@ export default function AgentsPage() {
 
   const loadAgents = async () => {
     try {
+      console.log('Loading agents...')
       const data = await api.getAgents()
+      console.log('Loaded agents:', data)
       setAgents(data)
     } catch (error) {
       console.error('Failed to load agents:', error)
