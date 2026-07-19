@@ -62,8 +62,8 @@ class Settings(BaseSettings):
     # Logging
     LOG_LEVEL: str = "INFO"
     LOG_FILE: str = "logs/app.log"
-    
-       model_config = {
+
+    model_config = {
         "env_file": ".env",
         "case_sensitive": True
     }
