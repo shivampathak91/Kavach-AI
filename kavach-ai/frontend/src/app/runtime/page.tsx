@@ -411,7 +411,12 @@ export default function RuntimeSecurityCenter() {
       let policy = 'None'
       let threat = 'None (Safe Behavior)'
       let reason = 'The input prompt does not request risky actions, administrative changes, or data extraction.'
-      let toolCall = {
+      let toolCall: {
+        tool: string
+        resource: string
+        action: string
+        arguments: Record<string, any>
+      } = {
         tool: 'filesystem.read',
         resource: 'files',
         action: 'READ',
