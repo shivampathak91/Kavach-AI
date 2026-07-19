@@ -106,3 +106,14 @@ export interface AuthTokens {
   token_type: string
   expires_in: number
 }
+
+export interface ToolCall {
+  tool: string
+  resource: string
+  action: string
+  arguments: {
+    path?: string
+    command?: string
+    [key: string]: any
+  }
+}
