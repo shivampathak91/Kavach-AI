@@ -430,7 +430,7 @@ export default function RuntimeSecurityCenter() {
           resource: 'system_root',
           action: 'DELETE',
           arguments: { command: 'rm -rf' }
-        }
+        } as any
       } else if (text.includes('ignore') || text.includes('jailbreak') || text.includes('override')) {
         risk = 95
         trust = 35
@@ -443,7 +443,7 @@ export default function RuntimeSecurityCenter() {
           resource: 'system_guardrails',
           action: 'DISABLE',
           arguments: { bypass: true }
-        }
+        } as any
       } else if (text.includes('database') || text.includes('select') || text.includes('exfiltrate') || text.includes('upload')) {
         risk = 90
         trust = 40
@@ -456,7 +456,7 @@ export default function RuntimeSecurityCenter() {
           resource: 'users',
           action: 'SELECT',
           arguments: { sql: 'SELECT * FROM users', external_host: 'http://unverified-host.net' }
-        }
+        } as any
       } else if (text.includes('grant') || text.includes('admin') || text.includes('permission')) {
         risk = 80
         trust = 60
@@ -469,7 +469,7 @@ export default function RuntimeSecurityCenter() {
           resource: 'role_definitions',
           action: 'ASSIGN',
           arguments: { user: 'operator', role: 'administrator' }
-        }
+        } as any
       }
 
       currentScenario = {
