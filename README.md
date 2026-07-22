@@ -17,18 +17,11 @@ Organizations need a security layer that understands AI interactions rather than
 
 ## Solution
 
-  User
-   │
-   ▼
-Kavach AI Security Layer
-   ├── Intent Analysis
-   ├── Risk Scoring
-   ├── Policy Enforcement
-   ├── Behavior Monitoring
-   └── Trust Evaluation
-   │
-   ▼
-AI Agent (GPT • Claude • Gemini • Custom Models)
+- Acts as a security layer between users and AI agents.
+- Analyzes every prompt in real time before it reaches the AI model.
+- Detects and blocks prompt injection, jailbreak attacks, and data exfiltration attempts.
+- Evaluates risk and enforces customizable security policies.
+- Monitors AI interactions and provides audit logs for complete visibility.
 
 ## 🚀 Features
 
