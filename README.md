@@ -1,6 +1,34 @@
 # Kavach AI – Zero-Trust Runtime Security Platform for Autonomous AI Agents
 
-A production-grade security platform that sits between AI agents and their tools (MCP servers/APIs) to intercept every action, understand intent, detect prompt injection, learn agent behavior, calculate dynamic trust scores, enforce security policies, require human approval for critical actions, and block unsafe operations before execution.
+Kavach AI is a runtime security platform for AI agents. Instead of modifying the AI model itself, it sits between users and AI agents, inspecting every prompt before it reaches the model. By understanding user intent, evaluating risk, and enforcing security policies, Kavach AI helps prevent prompt injection, jailbreak attempts, unauthorized tool execution, and sensitive data exposure in real time.
+
+## The Problem
+
+As AI agents become capable of accessing databases, calling APIs, and automating business workflows, they also introduce new security risks.
+
+Traditional security solutions such as firewalls and web application firewalls inspect network traffic, but they cannot understand the meaning or intent behind natural language prompts. As a result, attackers can manipulate AI agents using techniques such as:
+
+Prompt injection to override system instructions
+Jailbreak attacks to bypass safety restrictions
+Sensitive data extraction through carefully crafted prompts
+Unauthorized execution of tools and external APIs
+
+Organizations need a security layer that understands AI interactions rather than just network traffic.
+
+## Solution
+
+  User
+   │
+   ▼
+Kavach AI Security Layer
+   ├── Intent Analysis
+   ├── Risk Scoring
+   ├── Policy Enforcement
+   ├── Behavior Monitoring
+   └── Trust Evaluation
+   │
+   ▼
+AI Agent (GPT • Claude • Gemini • Custom Models)
 
 ## 🚀 Features
 
